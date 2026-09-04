@@ -8,6 +8,7 @@
 ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
+  initThemeToggle();
   initNavbar();
   applyBusinessInfo();
   initFloatingButtons();
@@ -22,6 +23,27 @@ document.addEventListener("DOMContentLoaded", () => {
   initRevealOnScroll();
   setActiveNavLink();
 });
+
+function initThemeToggle() {
+  const toggle = document.querySelector("[data-theme-toggle]");
+  if (!toggle) return;
+
+  const savedTheme = localStorage.getItem("jkr-theme");
+  const initialTheme = savedTheme || "light";
+  applyTheme(initialTheme);
+
+  toggle.addEventListener("click", () => {
+    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    localStorage.setItem("jkr-theme", nextTheme);
+    applyTheme(nextTheme);
+  });
+
+  function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    toggle.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+    toggle.setAttribute("title", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+  }
+}
 
 /* ============================================================
    NAVBAR
